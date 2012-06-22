@@ -1,0 +1,29 @@
+Check_MK Plugin to check PostgreSQL Server.
+
+    The client plugins will return a list of packages available for upgrade. It
+    will seperate upgradeable packages and security upgrades, so the check
+    can alert with different alerting levels. 
+    
+    The check will return:
+    
+     OK       - No upgrades are available.
+     WARNING  - Only non-security upgrades are available.
+     CRITICAL - Security upgrades are available (might also involve normal upgrades).
+    
+    The script was tested on the following Linux versions: Debian, SLES
+    
+    Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. I'm also reading the german
+    check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+
+// INSTALLATION INSTRUCTIONS
+
+    On your Check_MK clients:
+    
+        Install the python package and copy plugins/mk_postgres to your
+        clients into /usr/lib/check_mk_agent/plugins/
+    
+    On your check Server:
+    
+        install check_postgres-1.0.mkp on your check server 
+
