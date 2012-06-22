@@ -1,0 +1,116 @@
+#!/bin/bash
+
+# Check_MK agent plugin for monitoring Postgres databases
+# Karsten Schoeke 2012 karsten.schoeke@geobasis-bb.de
+# spezial thx to Mathias Kettner for the oracle agent
+# he was the template for this agent ;-)
+
+# fist to ensure that the user postgres can make su and called psql
+# please configure the pg_hba.conf that the agent can check the Databases
+
+# Get list of all running databases
+DBS=$(psql -l | awk '{ print $1}' | grep -vE '^-|^List|^Name|template|:|\(|^$')
+
+if [ -z "$DBS" ] ; then exit 0 ; fi
+
+CACHE_MAXAGE=120
+
+MK_CONFDIR="/etc/check_mk"
+
+# Source the optional configuration file for this agent plugin
+if [ -e "$MK_CONFDIR/postgres.cfg" ]
+then
+    . $MK_CONFDIR/postgres.cfg
+fi
+
+# It is possible to filter DBS totally. Just add the following to
+# the mk_postgres.cfg file:
+#
+#   EXCLUDE_<db>="ALL"
+#
+# Another option is to filter single checks for DBS. Just add
+# lines as follows to the mk_postgres.cfg file. One service per
+# line:
+#
+#   EXCLUDE_<db>="<service>"
+#
+# For example skip postgres_sessions and postgres_last_analyze checks
+# for the instance "mysid".
+#
+#   EXCLUDE_mysid="postgres_sessions postgres_database_size"
+#
+#  Avalible services are:
+#   - postgres_sessions
+#   - postgres_database_size
+#
+# This check uses a cache file to prevent problems with long running
+# SQL queries. It starts building a cache when
+#   a) no cache is present or the cache is too old and
+#   b) the cache is not currently being built
+# The cache is used for $CACHE_MAXAGE seconds. The CACHE_MAXAGE
+# option is pre-set to 120 seconds but can be changed in mk_oracle.cfg.
+
+for DB in $DBS; do
+    EXCLUDE=EXCLUDE_$DB
+    #echo "55 EXCLUDE: $EXCLUDE"
+    #echo "EXCLUDE: $EXCLUDE"
+    EXCLUDE=${!EXCLUDE}
+    #echo "57 EXCLUDE: $EXCLUDE"
+    # DB filtered totally?
+    if [ "$EXCLUDE" = "ALL" ]; then
+        continue
+    fi
+    #echo "EXCLUDE: $EXCLUDE DB: $DB"
+
+    CACHE_FILE=$MK_CONFDIR/postgres_$DB.cache
+
+    # Check if file exists and recent enough
+    if [ -s $CACHE_FILE ]; then
+        NOW=$(date +%s)
+        MTIME=$(stat -c %Y $CACHE_FILE)
+        if [ $(($NOW - $MTIME)) -le $CACHE_MAXAGE ]; then
+            USE_CACHE_FILE=1
+        fi
+    fi
+
+    # If the cache file exists, output it, regardless of its age. If it's outdated
+    # then it will be recreated *asynchronously*, we the new contents will not 
+    # be available here anyway.
+    if [ -s "$CACHE_FILE" ] ; then cat "$CACHE_FILE" ; fi
+   
+    # When not it checks if there is another task to update the cache is running
+    # at the moment (*.new) file present.
+    # When the cache is old and there is no *new file present, then start a query
+    # to update the information for this instance.
+    if [ -z "$USE_CACHE_FILE" -a ! -e "$CACHE_FILE.new" ]
+    then
+        setsid bash -c "
+            set -o noclobber
+            function psql ()
+            {
+                OUTPUT=\$($MK_CONFDIR/psql.sh \$1) || return 1
+                echo \"$DB\" \"\${OUTPUT}\" 
+            }
+            {
+            # Only execute checks when not filtered
+            if [  \"$EXCLUDE\" = \"${EXCLUDE/postgres_sessions/}\" ]; then
+                echo '<<<postgres_sessions>>>'
+                echo \"SELECT COUNT(*) FROM pg_database d LEFT JOIN pg_stat_activity s ON (s.datid = d.oid) where d.datname = '\"$DB\"';\" | psql \"$DB\"
+            fi
+            if [ \"$EXCLUDEi\" = \"${EXCLUDE/postgres_database_size/}\" ]; then
+                echo '<<<postgres_database_size>>>'
+                echo \"SELECT pg_database_size(d.oid) AS dsize FROM pg_database d JOIN pg_user u ON (u.usesysid = d.datdba) where d.datname = '\"$DB\"';\" | psql \"$DB\" 
+            fi
+            #analyze and vaccum only for postgres DB
+            if [ \"$DB\" = \"postgres\" ]; then
+               echo '<<<postgres_last_analyze>>>'
+               echo \"SELECT round(extract(epoch FROM now()-v)) AS term FROM (SELECT GREATEST(pg_stat_get_last_analyze_time(c.oid), pg_stat_get_last_autoanalyze_time(c.oid)) AS v FROM pg_class c, pg_namespace n WHERE relkind = 'r' AND n.oid = c.relnamespace AND n.nspname <> 'information_schema' ORDER BY 1 LIMIT 1) AS foo ;\" | psql \"$DB\"
+            fi
+            if [ \"$DB\" = \"postgres\" ]; then
+               echo '<<<postgres_last_vacuum>>>'
+               echo \"SELECT round(extract(epoch FROM now()-v)) AS term FROM (SELECT GREATEST(pg_stat_get_last_vacuum_time(c.oid), pg_stat_get_last_autovacuum_time(c.oid)) AS v FROM pg_class c, pg_namespace n WHERE relkind = 'r' AND n.oid = c.relnamespace AND n.nspname <> 'information_schema' ORDER BY 1 LIMIT 1) AS foo ;\" | psql \"$DB\"
+            fi
+            } > $CACHE_FILE.new && mv $CACHE_FILE.new $CACHE_FILE || rm -f $CACHE_FILE*
+        "
+    fi
+done
