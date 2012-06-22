@@ -1,14 +1,8 @@
 Check_MK Plugin to check PostgreSQL Server.
 
-    The client plugins will return a list of packages available for upgrade. It
-    will seperate upgradeable packages and security upgrades, so the check
-    can alert with different alerting levels. 
-    
-    The check will return:
-    
-     OK       - No upgrades are available.
-     WARNING  - Only non-security upgrades are available.
-     CRITICAL - Security upgrades are available (might also involve normal upgrades).
+    The client plugins will check Databasesize and Sessions on all avalible Databases.
+    For the global Database postgres will be check the last execute time of vacuum and analyze.
+    The agent can be custemized by config file, located under /etc/check_mk/postgres.cfg. 
     
     The script was tested on the following Linux versions: Debian, SLES
     
@@ -16,7 +10,7 @@ Check_MK Plugin to check PostgreSQL Server.
     check_mk ML: checkmk-de@lists.mathias-kettner.de
 
 
-// INSTALLATION INSTRUCTIONS
+    INSTALLATION INSTRUCTIONS
 
     On your Check_MK clients:
     
