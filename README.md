@@ -1,5 +1,5 @@
-check_mk
-========
+check_mk_pluins
+===============
 
 CheckMK Plugins
 
