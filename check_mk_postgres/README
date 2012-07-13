@@ -20,5 +20,5 @@ Check_MK Plugin to check PostgreSQL Server.
     On your check Server:
     
         install check_postgres-1.0.mkp on your check server
-        create a DB user root whith superuser grands
+        create a DB login rule root whith superuser grands
 
