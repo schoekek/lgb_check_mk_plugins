@@ -9,7 +9,7 @@
 # please configure the pg_hba.conf that the agent can check the Databases
 
 # Get list of all running databases
-DBS=$(psql -l | awk '{ print $1}' | grep -vE '^-|^List|^Name|template|:|\(|^$')
+DBS=$(su - postgres -c "psql -t -l "| awk '{ print $1}' | grep -vE 'template|:|\(|^$')
 
 if [ -z "$DBS" ] ; then exit 0 ; fi
 
