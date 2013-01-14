@@ -8,4 +8,4 @@ check_mk Plugin to check HP MSA Storage Unit via SNMP.
 
     On your check server:
     
-        Install the check_hp_msa-1.0.mkp package on your check server
+        Install the hp_msa-1.0.mkp package on your check server
