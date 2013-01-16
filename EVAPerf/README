@@ -8,7 +8,7 @@ check_mk Plugin to check HP EVA Storage Unit via evaperf binary.
 
     On your check server:
     
-        Install the hp_msa-1.0.mkp package on your check server
+        Install the hp_msa-x.x.mkp package on your check server
 
     On your Windows HP Eva Management server:
 
