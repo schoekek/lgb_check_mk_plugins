@@ -1,0 +1,24 @@
+check_mk Plugin to check Linux LVS Loadbalancer via lvsgsp.
+
+The client plugin will check the connection table from ipvs.
+Please compile and install the lvsgsp binary on your Linux installation
+lvsgsp is downloadable from LVS website under http://www.austintek.com/LVS/LVS-HOWTO/HOWTO/LVS-HOWTO.monitoring_lvs.html.
+Here is the direct download link: http://www.austintek.com/LVS/LVS-HOWTO/HOWTO/files/lvsgsp-0.0.4.tar.gz
+
+The check was tested on the following Linux versions: Debian Squeeze
+
+Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
+I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+INSTALLATION INSTRUCTIONS
+
+On your check_mk clients:
+Install the lvsgsp binary on /usr/local/sbin and the check_mk agent plugin under
+/usr/lib/check_mk/plugins/
+Create a file named /etc/check_mk/lvs thats contain one line per virtual LVS IP.
+for inctance (description virtual_LB_ip port):
+http_LB_Webserver 10.10.10.10 80 
+
+On your check server:
+
+Install the lvs-x.x.mk package.
