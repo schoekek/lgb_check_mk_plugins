@@ -1,0 +1,21 @@
+check the usability of a kerberos 5 KDC.
+
+check_mk check and WATO Rule for check_krb5 from http://exchange.nagios.org/directory/Plugins/Security/check_krb5/details
+
+The check was tested on the following Linux versions: Debian Squeeze
+
+Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
+I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+INSTALLATION INSTRUCTIONS
+
+On your check_mk clients:
+
+nothing.
+
+On your check server:
+
+Download and Install the check_krb5 Nagios Plugin 
+from http://exchange.nagios.org/directory/Plugins/Security/check_krb5/details
+Please to think on the dependency to Authen::Krb5, File::MkTemp, GetOpt::Long Perl modules.
+Install the check_krb5-x.x.mk package.
