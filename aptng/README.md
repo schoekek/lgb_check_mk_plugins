@@ -3,8 +3,6 @@ APT-NG - Check_MK Plugin to check for upgradeable Debian packages.
     It's based on plugin from Stefan Schlesinger https://github.com/sts/checkmk/tree/master/aptng.
     I change it to neu check_mk API and fix any thinks.
 
-    Check upgradeable packages.
-
     The script was tested on the following Debian versions: Lenny, Squeeze, Wheezy
     
 // INSTALLATION INSTRUCTIONS
