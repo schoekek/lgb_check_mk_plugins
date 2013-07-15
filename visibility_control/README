@@ -1,0 +1,12 @@
+check_mk Multiside extension to mange the user visibility.
+
+This extension is a mutiside snapin, which ist installable via 'add snapin to the sidebar' button.
+
+The snapin manage the visibility of Hosts/Services that you see only host and services that the user is a contact for yes/no.
+
+Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
+I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+INSTALLATION INSTRUCTIONS
+
+Install the lgb_visibility_control-x.x.mkp package on multiside server.
