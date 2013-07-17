@@ -1,4 +1,4 @@
-check_mk Multiside extension to mange the user visibility.
+check_mk Multiside extension to manage the user visibility.
 
 This extension is a mutiside snapin, which ist installable via 'add snapin to the sidebar' button.
 
