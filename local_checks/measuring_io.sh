@@ -1,4 +1,6 @@
-NZ_CPU=$(($(cat /proc/cpuinfo | grep processor| wc -l)-1))
+#!/bin/bash
+
+ANZ_CPU=$(($(cat /proc/cpuinfo | grep processor| wc -l)-1))
 for CPU in $(seq 0 $ANZ_CPU)
 do
         FILE=/tmp/cpu.number${CPU}
