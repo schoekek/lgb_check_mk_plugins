@@ -1,4 +1,4 @@
-ES="sda1 sdb5"
+DEVICES="sda1 sdb5"
 
 function gen_return_perc () {
         # gen_return_perc WERT WARN CRIT MIN MAX VariablenName ServiceName Definiation
