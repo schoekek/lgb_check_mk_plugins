@@ -1,3 +1,5 @@
+#!/bin/bash
+
 DEVICES="sda1 sdb5"
 
 function gen_return_perc () {
