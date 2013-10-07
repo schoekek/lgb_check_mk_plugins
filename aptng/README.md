@@ -9,8 +9,8 @@ APT-NG - Check_MK Plugin to check for upgradeable Debian packages.
 
     On your Check_MK clients:
     
-        Copy plugins/apt from mk package to your clients into /usr/lib/check_mk_agent/plugins/apt
-        Use the since check_mk version 1.2.3i1 vailible cache modus, into /usr/lib/check_mk_agent/plugins/14400/apt
+        Copy plugins/apt from mk package to your clients into /usr/lib/check_mk_agent/plugins/apt or
+        use the since check_mk version 1.2.3i1 vailible cache modus, into /usr/lib/check_mk_agent/plugins/14400/apt
         (for 4 hour check period)
     
     On your check Server:
