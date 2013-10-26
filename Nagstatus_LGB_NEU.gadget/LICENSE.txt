@@ -1,0 +1,21 @@
+By using this gadget you'll accept the terms presented in this document.
+
+You can freely use and modify this gadget and files provided with it. The
+gadget is provided as-is, with no guarantees or liabilities, and the maker
+does not provide any support unless he happens to feel like it.
+
+You may also redistribute the gadget and files provided with it, whether
+in original form or modified, with following restrictions:
+* You may not ask for or receive any form of compensation for what you
+  distribute
+* What you distribute must always accompany credits for original maker
+  of this product, and a reference of what parts of the product you have
+  modified
+  
+The copyright of the original product is (C) Jouko Markkanen, and all
+rights are reserved.
+
+This document may or may not be similar to common public licenses, but
+I am not a lawyer and don't know the exact details of such. If you're
+unsure of what is allowed and what not, ask me.
+

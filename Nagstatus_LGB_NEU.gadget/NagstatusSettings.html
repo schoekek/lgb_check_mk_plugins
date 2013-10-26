@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+    
+<head>
+    <title>Nagios Status Gadget Settings</title>
+    <script type="text/javascript" language="javascript" src="NagstatusSettings.js"></script>
+    <style type="text/css">body {width:300px;height:340px;}</style>
+</head>
+
+<body onLoad="initSettings()">
+    Window Title<br />
+    <input type="text" size="20" name="windowTitle" /><br />
+    Nagios Web UI URL<br />
+    <input type="text" size="40" name="nagiosUrl" /><br />
+    XML Status Provider URL<br />
+    (must be specified if nagxmlstatus.cgi is not within Nagios' cgi-bin directory)<br />
+    <input type="text" size="40" name="xmlProviderUrl" /><br />
+    URL points to:
+    <select name="xmlProviderType" id="xmlProviderType">
+        <option value="script">Script</option>
+        <option value="file">File</option>
+    </select><br/>
+    Username<br />
+    <input type="text" size="20" name="xmlProviderUser" /><br />
+    Password<br />
+    <input type="password" size="20" name="xmlProviderPass" /><br />
+    Refresh every <input type="text" size="3" name="refreshTimeoutSec" /> seconds<br />
+    When failures are detected, play following sound:<br />
+    <input type="text" size="28" name="alertSound" id="alertSound" /><br />
+    <input type="file" size="1" name="browseSound" id="browseSound" onchange="soundChanged()" style="width:0px;" />
+</body>
+
+</html>

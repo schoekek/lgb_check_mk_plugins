@@ -1,0 +1,10 @@
+body {
+    width: 610px;
+    height: 400px;
+    background-image: url("images/background_flyout.png");
+    color: #ffffff;
+    font-family: Segoe UI;
+    font-size: small;
+    margin: 0px;
+    padding: 0px;
+}
