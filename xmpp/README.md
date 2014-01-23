@@ -5,9 +5,9 @@ check_mk ML: checkmk-de@lists.mathias-kettner.de
     
 // INSTALLATION INSTRUCTIONS
 
-    On your check Server:
+On your check Server:
     
-        Install the xmpp-x.x.mk package.
+    Install the xmpp-x.x.mk package.
 	
 	Praparate your multisite user management, to use a 'Custom Attribut' named 'IM' and this as a Custom Macro.
 
