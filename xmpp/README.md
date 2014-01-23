@@ -12,8 +12,10 @@ check_mk ML: checkmk-de@lists.mathias-kettner.de
 	Praparate your multisite user management, to use a 'Custom Attribut' named 'IM' and this as a Custom Macro.
 
 	Insert the variable in your nagios/icinga check_mk template file.
-	<code>command_name check-mk-notify
+```
+	command_name check-mk-notify
   		command_line \
        		NOTIFY_CONTACTIM='$_CONTACTIM$' \
 	 	check_mk --notify
-	}</code>
+	}
+```
