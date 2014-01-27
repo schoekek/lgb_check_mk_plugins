@@ -1,0 +1,21 @@
+check_mk Plugin to check sms deamon smsd.
+
+The client plugin will check the status of smsd from Keijo Kasvi.
+Please configure your smsd to output the smsd status monitor file
+http://smstools3.kekekasvi.com/index.php?p=statusmonitor
+
+Change the location of status file in agentfile.
+
+The check was tested on the following Linux versions: Debian Squeeze
+
+Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
+I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+INSTALLATION INSTRUCTIONS
+
+On your check_mk clients:
+Install the the check_mk agent plugin under /usr/lib/check_mk/plugins/
+
+On your check server:
+
+Install the smsd-x.x.mk package.
