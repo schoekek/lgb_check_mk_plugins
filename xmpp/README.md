@@ -5,15 +5,17 @@ check_mk ML: checkmk-de@lists.mathias-kettner.de
     
 // INSTALLATION INSTRUCTIONS
 
-    On your check Server:
+On your check Server:
     
-        Install the xmpp-x.x.mk package.
+Install the xmpp-x.x.mk package.
 	
-	Praparate your multisite user management, to use a 'Custom Attribut' named 'IM' and this as a Custom Macro.
+Praparate your multisite user management, to use a 'Custom Attribut' named 'IM' and this as a Custom Macro.
 
-	Insert the variable in your nagios/icinga check_mk template file.
-	<code>command_name check-mk-notify
+Insert the variable in your nagios/icinga check_mk template file.
+```
+	command_name check-mk-notify
   		command_line \
        		NOTIFY_CONTACTIM='$_CONTACTIM$' \
 	 	check_mk --notify
-	}</code>
+	}
+```
