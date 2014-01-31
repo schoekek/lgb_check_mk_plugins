@@ -8,7 +8,6 @@
 # Threads: 2
 # MemoryUsage: 319508480
 #
-# Doku: http://services.interactive-instruments.de/xtraserver-aaa-suite/wiki/pub/Dokumentation/AAASuiteDocs/XtraServerAAASuite_WFS-WMS.pdf
 
 
 # Karsten Schöke <karsten.schoeke@geobasis-bb.de>
