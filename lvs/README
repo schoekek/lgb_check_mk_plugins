@@ -5,7 +5,7 @@ Please compile and install the lvsgsp binary on your Linux installation
 lvsgsp is downloadable from LVS website under http://www.austintek.com/LVS/LVS-HOWTO/HOWTO/LVS-HOWTO.monitoring_lvs.html.
 Here is the direct download link: http://www.austintek.com/LVS/LVS-HOWTO/HOWTO/files/lvsgsp-0.0.4.tar.gz
 
-The check was tested on the following Linux versions: Debian Squeeze
+The check was tested on the following Linux versions: Debian Squeeze, Wheezy
 
 Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
 I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
