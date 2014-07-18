@@ -22,6 +22,7 @@
 # Example Agent Output:
 
 #<<<apt>>>
+#yes
 #6.0.3
 #x11-common Debian-Security:6.0/stable
 
@@ -47,10 +48,11 @@ def check_apt(_no_item, _no_params, info):
     updates      = 0
     
     # Parse the agent output
-    deb_release  = info[0][0]
+    deb_release  = info[1][0]
+    reboot_req   = info[0][0]
 
-    if len(info) > 1:
-        packages  = info[1:]
+    if len(info) > 2:
+        packages  = info[2:]
         
         for package in packages:
             name   = package[0]
@@ -63,12 +65,16 @@ def check_apt(_no_item, _no_params, info):
             
             if not source in apt_upgrades:
                 apt_upgrades[source] = []
-            
+
     for source in apt_upgrades:
             if level == 1:
                 msg = "%s updates (!)" % updates 
             elif level >= 2:
                 msg = "%s critical updates (!!)" % updates 
+            
+    if (reboot_req == "yes") and (level == 0):
+        level = 1 
+        msg = "reboot required (!)"
 
     if level > 0:
         return (level, "%s" % msg)
