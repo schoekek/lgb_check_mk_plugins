@@ -3,7 +3,7 @@ APT-NG - Check_MK Plugin to check for upgradeable Debian packages.
     It's based on plugin from Stefan Schlesinger https://github.com/sts/checkmk/tree/master/aptng.
     I change it to neu check_mk API and fix any thinks.
 
-    Since 2.4, the check control if a reboot after kernel update required.
+    Since 2.5, the check control if a reboot after kernel update required.
 
     The script was tested on the following Debian versions: Lenny, Squeeze, Wheezy
     
