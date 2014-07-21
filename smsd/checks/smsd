@@ -1,0 +1,61 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+#
+# 2014 Karsten Schoeke karsten.schoeke@geobasis-bb.de
+
+# Example output from agent:
+#<<<smsd>>>
+#status i---------------------------------------------------------------
+#mon -61
+
+def inventory_smsd(info):
+    if len(info) > 0:
+        return [(None, None)]
+
+def check_smsd(item, _no_params, info):
+    message = ""
+    rc = 0
+    worststate = 0
+
+    if len(info) == 0:
+        return (3, "no information from SMSD: SMSD daemon not running or smsd stus file not configured.")
+
+    for line in info:
+        if len(line) == 2 :
+            smsd_state = info[0][1][0]
+            smsd_mon = info[1][1]
+            message = ""
+            if smsd_state == "b":
+                rc = 2
+                message += "smsd is blocked."
+            if smsd_state == "-":
+                rc = 3
+                message += "smsd is not configured or not connected."
+            if smsd_state == "s":
+                rc = 0
+                message += "smsd is sending."
+            if smsd_state == "r":
+                rc = 0
+                message += "smsd ist receiving."
+            if smsd_state == "i":
+                rc = 0
+                message += "smsd is idle."
+            #receiving intensity to low
+            if smsd_mon < -10:
+                rc = 2
+                message += ", intensity is to low %s dBm" % smsd_mon
+
+            worststate = max(worststate, rc)
+            perfdata = [ ('intensity', str(smsd_mon) + 'dBm', '', '', 0, '') ]
+
+            return (worststate, message, perfdata)
+    return (2, "no smsd status info found.")
+
+
+check_info["smsd"] = {
+        "check_function"            : check_smsd,
+        "service_description"       : "SMSD Status",
+        "has_perfdata"              : True,
+        "inventory_function"        : inventory_smsd,
+        "group"                     : "smsd",
+}
