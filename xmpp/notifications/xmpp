@@ -4,7 +4,7 @@
 import os, sys, xmpp
 
 fromjid = 'nagios@local'
-passwd = 'nagios'
+passwd = '*****'
 tojid= os.environ['NOTIFY_CONTACTIM']
 
 message = os.environ['NOTIFY_HOSTNAME'] + " "
