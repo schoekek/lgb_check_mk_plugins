@@ -2,7 +2,10 @@
 
 if [[ -e /etc/debian_version && `which apt-get` ]] &>/dev/null ; then
   echo "<<<apt>>>"
-  if [[ -e /var/run/apt-dater-host_reboot ]]; then echo "yes"; else echo "no"; fi
+  KERNEL_PACKAGE=`dpkg-query -W -f='${Version} ${Status;20} ${Maintainer} ${Provides}\n' |grep 'install ok installed Debian Kernel Team'|grep linux-image| awk '{ print $1 }'`
+  KERNEL=`cat /proc/version`
+  KERNEL_VERSION=$(echo ${KERNEL##* })
+  if [[ $KERNEL_PACKAGE == $KERNEL_VERSION ]]; then echo "no"; else echo "yes"; fi
   cat /etc/debian_version
   waitmax 25 /usr/bin/apt-get -o Debug::NoLocking=yes -s dist-upgrade -y | awk '/^Inst/ { print $2 " " $5}' || echo "timeout_apt_get Debian-Security:X.X/DUMMY)"
 fi
