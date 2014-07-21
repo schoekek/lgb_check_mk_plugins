@@ -22,7 +22,7 @@ else:
 
 jid = xmpp.protocol.JID(fromjid)
 client = xmpp.Client(jid.getDomain(), debug=[])
-client.connect(server=('fvsko01.lgb.local',5222))
+client.connect(server=('server.local',5222))
 client.auth(jid.getNode(), passwd, jid.getResource())
 client.sendInitPresence()
 msg = xmpp.Message(tojid, message)
