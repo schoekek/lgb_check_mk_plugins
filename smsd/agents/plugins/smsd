@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Check_MK agent plugin for monitoring smsd
+# Karsten Schoeke 2014 karsten.schoeke@geobasis-bb.de
+# special thx to Mathias Kettner for the check_mk software
+
+SMSD_STATFILE="/var/log/smstools/smsd_stats/status"
+test -e $SMSD_STATFILE || exit 0
+
+# Source the configuration file for this agent plugin
+echo '<<<smsd>>>'
+echo 'status' $(cat $SMSD_STATFILE | head -1 | cut -f 3)
+MON=$(tail -n 1 $SMSD_STATFILE | cut -f 8 | awk '{print $2}')
+if [ -n "$MON" ]
+then
+    echo 'mon' $MON
+else
+    echo 'mon 0'
+fi
