@@ -1,0 +1,16 @@
+title: Shows smsd status via status file
+agents: smsd
+author: Karsten Schoeke (karsten.schoeke@geobasis-bb.de)
+license: GPL
+distribution: check_mk
+description:
+ This check uses the smsd status file to monitor
+ the state of sms deamon.
+
+perfdata:
+ The agent are send data for receiving intensity.
+
+item:
+ One item avalible.
+
+inventory:
