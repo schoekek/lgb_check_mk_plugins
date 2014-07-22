@@ -1,11 +1,19 @@
 #!/bin/bash
 
 if [[ -e /etc/debian_version && `which apt-get` ]] &>/dev/null ; then
-  echo "<<<apt>>>"
-  KERNEL_PACKAGE=`dpkg-query -W -f='${Version} ${Status;20} ${Maintainer} ${Provides}\n' |grep 'install ok installed Debian Kernel Team'|grep linux-image| awk '{ print $1 }'`
-  KERNEL=`cat /proc/version`
-  KERNEL_VERSION=$(echo ${KERNEL##* })
-  if [[ $KERNEL_PACKAGE == $KERNEL_VERSION ]]; then echo "no"; else echo "yes"; fi
-  cat /etc/debian_version
-  waitmax 25 /usr/bin/apt-get -o Debug::NoLocking=yes -s dist-upgrade -y | awk '/^Inst/ { print $2 " " $5}' || echo "timeout_apt_get Debian-Security:X.X/DUMMY)"
+    echo "<<<apt>>>"
+    DEBIAN_VERSION=$(cat /etc/debian_version | cut -d '.' -f1)
+    DEB6_RE='^\S+ \S+ \S+ \(Debian ([^\)]+)\).*$'
+    KERNEL_PACKAGE=`dpkg-query -W -f='${Version} ${Status;20} ${Maintainer} ${Provides}\n' |grep 'install ok installed Debian Kernel Team'|grep linux-image| awk '{ print $1 }'`
+    KERNEL=`cat /proc/version`
+    if [[ $DEBIAN_VERSION == '6' ]]; then
+        if [[ $KERNEL =~ $DEB6_RE ]]; then
+            KERNEL_VERSION="${BASH_REMATCH[1]}"
+        fi
+    elif [[ $DEBIAN_VERSION == '7' ]]; then
+            KERNEL_VERSION=$(echo ${KERNEL##* })
+    fi
+    if [[ $KERNEL_PACKAGE == $KERNEL_VERSION ]]; then echo "no"; else echo "yes"; fi
+    cat /etc/debian_version
+    waitmax 25 /usr/bin/apt-get -o Debug::NoLocking=yes -s dist-upgrade -y | awk '/^Inst/ { print $2 " " $5}' || echo "timeout_apt_get Debian-Security:X.X/DUMMY)"
 fi
