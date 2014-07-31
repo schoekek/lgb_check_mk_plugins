@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#loeschen der check_mk Agenten cache fuer apt
+find /etc/check_mk/cache/ -type f -name 'plugins*apt.cache' -delete && check_mk_agent &> /dev/null
