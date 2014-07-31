@@ -22,7 +22,7 @@ INSTALLATION INSTRUCTIONS
 AGENT DEPLOYING AND PACKAGING
 
     We package the agent and helpful thinks into debian packages.
-    Following is intiegrated:
+    Following is integrated:
     - the agent Plugin ;-)
     - a script to remove the agent plugin cache under /usr/sbin/lgb-check-mk-agent-aptng
     - a kernel post script to remove the agent plugin cache after a neu kernel installation
