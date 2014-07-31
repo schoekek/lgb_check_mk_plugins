@@ -18,3 +18,15 @@ INSTALLATION INSTRUCTIONS
     On your check Server:
     
         Install the apt-x.x.mk package.
+
+AGENT DEPLOYING AND PACKAGING
+
+    We package the agent and helpful thinks into debian packages.
+    Following is intiegrated:
+    - the agent Plugin ;-)
+    - a script to remove the agent plugin cache under /usr/sbin/lgb-check-mk-agent-aptng
+    - a kernel post script to remove the agent plugin cache after a neu kernel installation
+      under /etc/kernel/postinst.d/lgb-check-mk-agent-aptng-reboot
+    - a dpkg post install script to remove the agent plugin cache after a neu package installation
+      under /etc/apt/apt.conf.d/99lgb-check-mk-agent-aptng
+    - a rc.local entry to remove the agent plugin cache after a reboot
