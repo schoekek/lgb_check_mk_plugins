@@ -7,7 +7,7 @@ APT-NG - Check_MK Plugin to check for upgradeable Debian packages.
 
     The script was tested on the following Debian versions: Lenny, Squeeze, Wheezy
     
-// INSTALLATION INSTRUCTIONS
+INSTALLATION INSTRUCTIONS
 
     On your Check_MK clients:
     
