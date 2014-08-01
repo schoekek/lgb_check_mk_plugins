@@ -30,3 +30,4 @@ AGENT DEPLOYING AND PACKAGING
     - a dpkg post install script to remove the agent plugin cache after a neu package installation
       under /etc/apt/apt.conf.d/99lgb-check-mk-agent-aptng
     - a rc.local entry to remove the agent plugin cache after a reboot
+      --> via puppet ;-)
