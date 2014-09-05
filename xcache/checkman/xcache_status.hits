@@ -1,0 +1,25 @@
+title: Shows the access status about php opcache XCache 
+agents: xcache_status
+author: Karsten Schoeke (karsten.schoeke@geobasis-bb.de)
+license: GPL
+distribution: check_mk
+description:
+ This check monitors the hit statistic 
+ of this PHP XCache.
+ The check distinguishes between php and variables hits.
+
+examples:
+
+perfdata:
+ The  agent are send data for php and variables cache hits.
+
+item:
+ one item, included php and var hits.
+
+[parameters]
+ {"misses_php"} - A pair of two values to be used as WARN/CRIT levels
+ float numbers are interpreted as requested php cache but not in cache.
+
+ {"misses_var"} - A pair of two values to be used as WARN/CRIT levels
+ float numbers are interpreted as requested var cache but not in cache.
+

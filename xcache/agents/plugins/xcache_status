@@ -1,0 +1,35 @@
+#!/usr/bin/python
+# encoding: utf-8
+
+# Check_MK-Agent-Plugin - Xcache Status
+
+# To make this agent plugin work you have to load the xchache php Module,
+# and put the xcache_status.php script in your webserver document root.
+
+import urllib2, sys, os
+
+config_dir = os.getenv("MK_CONFDIR", "/etc/check_mk")
+config_file = config_dir + "/xcache_status.conf"
+
+proto = 'http'
+server = 'localhost'
+port = 80
+
+if os.path.exists(config_file):
+    execfile(config_file)
+
+print '<<<xcache_status>>>'
+try:
+    # Try to fetch the xcache status page
+    url = '%s://%s:%s/xcache/xcache_status.php' % (proto, server, port)
+    fd = urllib2.urlopen(url)
+    for line in fd.read().split('\n'):
+        if not line.strip():
+            continue
+        print line
+except urllib2.HTTPError, e:
+    sys.stderr.write('HTTP-Error (%s): %s %s\n' % (url, e.code, e))
+
+except Exception, e:
+    sys.stderr.write('Exception (%s:%d): %s\n' % (server, port, e))
+

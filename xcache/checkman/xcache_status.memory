@@ -1,0 +1,25 @@
+title: Shows the memory status about php opcache XCache 
+agents: xcache_status
+author: Karsten Schoeke (karsten.schoeke@geobasis-bb.de)
+license: GPL
+distribution: check_mk
+description:
+ This check monitors the Available Memory 
+ of this PHP XCache.
+ The check distinguishes between php and variables memory cache.
+
+examples:
+
+perfdata:
+ The  agent are send data for php and variables cache size.
+
+item:
+ one item, included php and var memory
+
+[parameters]
+ {"mem_php"} - A pair of two values to be used as WARN/CRIT levels
+ float numbers are interpreted as using php cache memory in percent.
+
+ {"mem_var"} - A pair of two values to be used as WARN/CRIT levels
+ float numbers are interpreted as using var cache memory in percent.
+

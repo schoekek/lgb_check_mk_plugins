@@ -1,0 +1,197 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+#
+# Karsten Schoeke <karsten.schoeke@geobasis-bb.de>
+#
+# check_mk is free software;  you can redistribute it and/or modify it
+# under the  terms of the  GNU General Public License  as published by
+# the Free Software Foundation in version 2.  check_mk is  distributed
+# in the hope that it will be useful, but WITHOUT ANY WARRANTY;  with-
+# out even the implied warranty of  MERCHANTABILITY  or  FITNESS FOR A
+# PARTICULAR PURPOSE. See the  GNU General Public License for more de-
+# ails.  You should have  received  a copy of the  GNU  General Public
+# License along with GNU Make; see the file  COPYING.  If  not,  write
+# to the Free Software Foundation, Inc., 51 Franklin St,  Fifth Floor,
+# Boston, MA 02110-1301 USA.
+
+#<<<xchache_status>>>
+#memory_php_max 134217728
+#memory_php_cur 134049588
+#memory_var_max 16777216
+#memory_var_cur 16744192
+#php_cache_hits 55
+#var_cache_hits 0
+#php_misses 8
+#var_misses 0
+#php_cached 8
+#var_cached 0
+#php_errors 16
+#var_errors 0
+
+#helper
+def parse_xcache_status(info):
+    values = {}
+    for line in info:
+        if len(line) == 2:
+            varname, value = line
+            try:
+                value = int(value)
+            except:
+                pass
+        else:
+            varname = line[0]
+            value = None
+
+        values[varname] = value
+    return values
+
+def translate_xcache_mem(mem):
+    mem_kb = mem / 1024.0
+    mem_mb = mem_kb / 1024.0
+    return mem_mb 
+
+#memory
+factory_settings["xcache_status_memory_default_levels"] = {
+    "mem_php" : (80.0, 90.0),
+    "imem_var" : (80.0, 90.0),
+}
+
+def inventory_xcache_memory(info):
+    for name, value in info:
+        if name == "memory_php_max":
+            yield None, {} 
+
+def check_xcache_memory(_no_item, params, info):
+    message = ""
+    perfdata = []
+    values = parse_xcache_status(info)
+    mem_php_max = translate_xcache_mem(values["memory_php_max"])
+    mem_php_cur = translate_xcache_mem(values["memory_php_cur"])
+    mem_var_max = translate_xcache_mem(values["memory_var_max"])
+    mem_var_cur = translate_xcache_mem(values["memory_var_cur"])
+    if mem_php_max > 0:
+        mem_php_used_perc = (float(mem_php_max) - float(mem_php_cur)) * 100 / float(mem_php_max) 
+    else:
+        mem_php_used_perc = 0
+    if mem_var_max > 0:
+        mem_var_used_perc = (float(mem_var_max) - float(mem_var_cur)) * 100 / float(mem_var_max)
+    else:
+        mem_var_used_perc = 0
+
+    message = "cache memory for php %.1f %% used (%.2f MB from %.2f MB)" % (mem_php_used_perc, (float(mem_php_max) - float( mem_php_cur)), mem_php_max) 
+    message += ", cache memory for variables %.1f %% used (%.2f MB from %.2f MB)" % (mem_var_used_perc, (float(mem_var_max) - float( mem_var_cur)), mem_var_max) 
+
+    perfdata = [
+        ('php', str(mem_php_max - mem_php_cur) + 'MB', '', '', 0, mem_php_max),
+        ('var', str(mem_var_max - mem_var_cur) + 'MB', '', '', 0, mem_var_max),
+        ('perc_php', mem_php_used_perc, '', '', 0, 100),
+        ('perc_var', mem_var_used_perc, '', '', 0, 100),
+    ]
+
+    yield 0, message, perfdata
+
+    if params.get("mem_php"):
+        php_warn, php_crit = params["mem_php"]
+        if mem_php_used_perc >= php_crit:
+            state = 2
+        elif mem_php_used_perc >= php_warn:
+            state = 1
+        else:
+            state = 0
+        if state:
+            yield state, "to many use php memory cache (warn/crit at %.1f/%.1f)" % (php_warn, php_crit)
+
+    if params.get("mem_var"):
+        var_warn, var_crit = params["mem_var"]
+        if mem_var_used_perc >= var_crit:
+            state = 2
+        elif mem_var_used_perc >= var_warn:
+            state = 1
+        else:
+            state = 0
+        if state:
+            yield state, "to many use var memory cache (warn/crit at %.1f/%.1f)" % (var_warn, var_crit)
+
+check_info['xcache_status.memory'] = {
+    "check_function"          : check_xcache_memory,
+    "inventory_function"      : inventory_xcache_memory,
+    "service_description"     : "XCache Memory used",
+    "has_perfdata"            : True,
+    "default_levels_variable" : "xcache_status_memory_default_levels",
+    "group"                   : "xcache_mem",
+}
+
+
+#hits
+factory_settings["xcache_status_hits_default_levels"] = {
+    "misses_php" : (100, 250),
+    "misses_var" : (10, 25),
+}
+
+
+def inventory_xcache_hits(info):
+    for name, value in info:
+        if name == "php_cache_hits":
+            yield None, {}
+
+def check_xcache_hits(_no_item, params, info):
+    this_time = time.time()
+    message = ""
+    perfdata = []
+    values = parse_xcache_status(info)
+    timedif, php_hits_per_sec = get_counter("xcache_php_cache_hits", this_time, values["php_cache_hits"])
+    php_cached = values["php_cached"]
+    php_cache_misses = values["php_misses"]
+    php_errors = values["php_errors"]
+    timedif, var_hits_per_sec = get_counter("xcache_var_cache_hits", this_time, values["var_cache_hits"])
+    var_cached = values["var_cached"]
+    var_cache_misses = values["var_misses"]
+    var_errors = values["var_errors"]
+
+    message = "%.2f hits/s are loaded , %d entries stored and %d requested, but not in the php cache" % (php_hits_per_sec, php_cached, php_cache_misses)
+    message += ", %.2f hits/s are loaded , %d entries stored and %d requested, but not in the var cache" % (var_hits_per_sec, var_cached, var_cache_misses)
+
+    perfdata = [
+        ('php_hits', str(php_hits_per_sec) + 'hits/s', '', '', '', ''),
+        ('var_hits', str(var_hits_per_sec) + 'hits/s', '', '', '', ''),
+        ('php_misses', str(php_cache_misses), '', '', '', ''),
+        ('var_misses', str(var_cache_misses), '', '', '', ''),
+        ('php_cached', str(php_cached), '', '', '', ''),
+        ('var_cached', str(var_cached), '', '', '', ''),
+        ('php_errors', str(php_errors), '', '', '', ''),
+        ('var_errors', str(var_errors), '', '', '', ''),
+    ]
+
+    yield 0, message, perfdata
+
+    if params.get("misses_php"):
+        php_warn, php_crit = params["misses_php"]
+        if php_cache_misses >= php_crit:
+            state = 2
+        elif php_cache_misses >= php_warn:
+            state = 1
+        else:
+            state = 0
+        if state:
+            yield state, "to many missed php cache hits (warn/crit at %.1f/%.1f)" % (php_warn, php_crit)
+
+    if params.get("misses_var"):
+        var_warn, var_crit = params["misses_var"]
+        if var_cache_misses >= var_crit:
+            state = 2
+        elif var_cache_misses >= var_warn:
+            state = 1
+        else:
+            state = 0
+        if state:
+            yield state, "to many  missed var cache hits (warn/crit at %.1f/%.1f)" % (var_warn, var_crit)
+
+check_info['xcache_status.hits'] = {
+    "check_function"          : check_xcache_hits,
+    "inventory_function"      : inventory_xcache_hits,
+    "service_description"     : "XCache Hits",
+    "has_perfdata"            : True,
+    "default_levels_variable" : "xcache_status_hits_default_levels",
+    "group"                   : "xcache_hits",
+}
+

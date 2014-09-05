@@ -1,0 +1,22 @@
+check_mk Plugin to check php opcacher modul XCache.
+
+The agent plugin will check the status of xcache.
+Please install and configure the xcache php module 
+and put the xcache_status.php file in the webserver root directory.
+
+The check was tested on the following Linux versions: Debian Wheezy
+
+Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
+I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+INSTALLATION INSTRUCTIONS
+
+On your check_mk clients:
+Put xcache_status.php into the webserver root directory
+Install the check_mk agent plugin under
+/usr/lib/check_mk/plugins/
+Create a file named /etc/check_mk/xcache_status.conf,
+for customize your webserver settings.
+
+On your check server:
+Install the xcache-x.x.mk package.
