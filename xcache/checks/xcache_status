@@ -53,7 +53,7 @@ def translate_xcache_mem(mem):
 #memory
 factory_settings["xcache_status_memory_default_levels"] = {
     "mem_php" : (80.0, 90.0),
-    "imem_var" : (80.0, 90.0),
+    "mem_var" : (80.0, 90.0),
 }
 
 def inventory_xcache_memory(info):
