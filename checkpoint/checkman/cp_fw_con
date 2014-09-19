@@ -1,0 +1,32 @@
+title: Shows connection status about checkpoint firewall
+author: Karsten Schoeke (karsten.schoeke@geobasis-bb.de)
+license: GPL
+distribution: check_mk
+description:
+ This check uses the snmp mib to read connection value
+ of a checkpoint firewall.
+
+examples:
+ factory_settings["cp_fw_con_default_levels"] = {
+        "con" : (10000, 15000), #warn/crit levels connections
+        }
+
+perfdata:
+ The  agent are send data for connections.
+
+item:
+ no items
+
+inventory:
+ one check per firewall
+
+[parameters]
+ parameters (dict): This check requires a dictionary with the following keys.
+                   If a key is missing no WARN/CRIT verfication is done for
+                   this specific key
+
+ {"con"} - A pair of two values to be used as WARN/CRIT levels
+ Integer numbers are interpreted as remaining active connections
+
+[configuration]
+cp_fw_con_default_levels(dict): Default warn/crit levels connections

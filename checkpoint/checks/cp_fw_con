@@ -1,0 +1,63 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+#
+# 2014 Karsten Schoeke karsten.schoeke@geobasis-bb.de
+
+# check_mk is free software;  you can redistribute it and/or modify it
+# under the  terms of the  GNU General Public License  as published by
+# the Free Software Foundation in version 2.  check_mk is  distributed
+# in the hope that it will be useful, but WITHOUT ANY WARRANTY;  with-
+# out even the implied warranty of  MERCHANTABILITY  or  FITNESS FOR A
+# PARTICULAR PURPOSE. See the  GNU General Public License for more de-
+# ails.  You should have  received  a copy of the  GNU  General Public
+# License along with GNU Make; see the file  COPYING.  If  not,  write
+# to the Free Software Foundation, Inc., 51 Franklin St,  Fifth Floor,
+# Boston, MA 02110-1301 USA.
+
+###### FW data
+# "1.3.6.1.4.1.2620.1.1.25.3.0"; # number of connections
+
+factory_settings["cp_fw_con_default_levels"] = {
+       "con" : (10000, 15000),
+}
+
+def inventory_cp_fw_con(info):
+    if len(info) > 0:
+        return [ (None, None) ]
+
+def check_cp_fw_con(_no_item, params, info):
+    state = 0
+    message = ""
+    perfdata = []
+    if len(info) > 0:
+        message = "%d connections" % int(info[0][0])
+
+        if params.get("con"):
+            con_warn, con_crit = params["con"]
+            if int(info[0][0]) >= con_crit:
+                state = 2
+                message += ", is to many (warn/crit at %d/%d)" % (con_warn, con_crit)
+            elif int(info[0][0]) >= con_warn:
+                state = 1
+                message += ", is to many (warn/crit at %d/%d)" % (con_warn, con_crit)
+            else:
+                state = 0
+
+    perfdata = [
+        ('connections', int(info[0][0]), con_warn, con_crit, ''),
+    ]
+
+
+    if message or state:
+        yield state, message, perfdata
+
+check_info['cp_fw_con'] = {
+  "inventory_function"      : inventory_cp_fw_con,
+  "check_function"          : check_cp_fw_con,
+  "service_description"     : "CP FW connections",
+  "has_perfdata"            : True,
+  "default_levels_variable" : "cp_fw_con_default_levels",
+  "group"                   : "cp_fw_con",
+  "snmp_info"               : ( ".1.3.6.1.4.1.2620.1.1.25", [ "3.0" ] ),
+  "snmp_scan_function"      : lambda oid: oid(".1.3.6.1.4.1.2620.1.1.21.0").lower().startswith('firewall') 
+}

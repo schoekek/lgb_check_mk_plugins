@@ -1,0 +1,9 @@
+check_mk Plugin to check checkpoint Firewalls via SNMP.
+
+Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. I'm also reading the german
+check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+INSTALLATION INSTRUCTIONS
+
+On your check server:
+Install the checkpoint-x.x.mk package.
