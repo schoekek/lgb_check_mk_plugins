@@ -19,7 +19,7 @@ def perfometer_xcache_status_memory(row, check_command, perf_data):
     texts = []
     for i, color in [
         ( 2, "#f0b000" ),  #php
-        ( 3, "#00ff80" )]: #viar
+        ( 3, "#00ff80" )]: #var
         value = float(perf_data[i][1])
         val = "%.1f%%" % value
         h += perfometer_linear(value, color)
