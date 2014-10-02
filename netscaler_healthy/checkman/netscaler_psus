@@ -1,0 +1,18 @@
+title: Netscaler: power supply healthy check 
+author: Karsten Schoeke (karsten.schoeke@geobasis-bb.de)
+agents: snmp
+license: GPL
+distribution: check_mk
+description:
+ Checks the speed of a fan in an Netscaler Appliance.
+ Displays speed of the fan.
+
+ Returns {OK} if the status is reported to be ok,
+ {CRIT} on status is failed,
+ {UNKNOW} on other state.
+
+item:
+ The ConterName of the PSUS Healthy entry.
+
+inventory:
+ Finds one item per psus.

@@ -1,0 +1,19 @@
+title: Netscaler System Temperature 
+author: Karsten Schoeke (karsten.schoeke@geobasis-bb.de)
+agents: snmp
+license: GPL
+distribution: check_mk
+description:
+ Checks the system temperature of an Netscaler Appliance.
+
+ Returns {OK} if the temperature is reported to be ok,
+ {CRIT} on cwtemperature is to higth.
+
+item:
+ The ConterName of the temperature sensor entry.
+
+perfdata:
+ One value: The temperature of the system sensor (°C)
+
+inventory:
+ Finds one item per sensor

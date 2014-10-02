@@ -1,0 +1,20 @@
+title: Netscaler: Speed of Fans
+author: Karsten Schoeke (karsten.schoeke@geobasis-bb.de)
+agents: snmp
+license: GPL
+distribution: check_mk
+description:
+ Checks the speed of a fan in an Netscaler Appliance.
+ Displays speed of the fan.
+
+ Returns {OK} if the speed is reported to be ok,
+ {CRIT} on speed is to low.
+
+item:
+ The ConterName of the FAN Healthy entry.
+
+perfdata:
+ One value: The speed of the fan (rpm).
+
+inventory:
+ Finds one item per fan

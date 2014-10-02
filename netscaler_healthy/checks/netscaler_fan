@@ -1,0 +1,46 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+#
+
+# Karsten Schöke <karsten.schoeke@geobasis-bb.de>
+
+#read the nsSysHealthTable from
+#.1.3.6.1.4.1.5951.4.1.1.41.7
+
+def inventory_netscaler_fan(info):
+    inventory = []
+    for CounterName, CounterValue in info:
+        if "Speed" in CounterName:
+           inventory.append( (CounterName[:-5], None) )
+    return inventory
+
+def check_netscaler_fan(item, _no_params, info):
+    rc = 0
+
+    for CounterName, CounterValue in info:
+        if CounterName[:-5] == item:
+            CounterValue=int(CounterValue)
+            message = CounterName[:-5]
+
+            # check speed value
+            if CounterValue < 3000:
+                message += ", speed is to low %s" % CounterValue
+                rc = 2
+
+            # report speed
+            message += ", speed is %s rpm" % CounterValue
+            perfdata = [ ('fanspeed', str(CounterValue) + 'rpm', '',   '',   0, '') ]
+
+            return rc, message, perfdata
+
+    return 3, "No fan %s found" % item
+
+check_info["netscaler_fan"] = {
+    "check_function"        : check_netscaler_fan,
+    "inventory_function"    : inventory_netscaler_fan,
+    "service_description"   : "Fan %s",
+    "has_perfdata"          : True,
+    "snmp_info"             : (".1.3.6.1.4.1.5951.4.1.1.41.7.1", [1, 2]),
+                              # sysHealthCounterName, sysHealthCounterValue
+    "snmp_scan_function"    : lambda oid: oid(".1.3.6.1.2.1.1.2.0").startswith(".1.3.6.1.4.1.5951"),
+}

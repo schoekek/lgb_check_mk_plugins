@@ -1,0 +1,46 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+#
+
+# Karsten Schöke <karsten.schoeke@geobasis-bb.de>
+
+#read the nsSysHealthTable from
+#.1.3.6.1.4.1.5951.4.1.1.41.7
+
+def inventory_netscaler_temp(info):
+    inventory = []
+    for CounterName, CounterValue in info:
+        if "InternalTemperature" in CounterName:
+           inventory.append( (CounterName[:-11], None) )
+    return inventory
+
+def check_netscaler_temp(item, _no_params, info):
+    rc = 0
+
+    for CounterName, CounterValue in info:
+        if CounterName[:-11] == item:
+            CounterValue=int(CounterValue)
+            message = CounterName[:-11]
+
+            # check temp value
+            if CounterValue > 50:
+                message += ", temperature is to high %s" % CounterValue
+                rc = 2
+
+            # report temp
+            message += ", temperature is %s °C" % CounterValue
+            perfdata = [ ('temperature', str(CounterValue) + 'Grad', '',   '',   0, '') ]
+
+            return rc, message, perfdata
+
+    return 3, "No sensor %s found" % item
+
+check_info["netscaler_temp"] = {
+    "check_function"        : check_netscaler_temp,
+    "inventory_function"    : inventory_netscaler_temp,
+    "service_description"   : "Temperature %s",
+    "has_perfdata"          : True,
+    "snmp_info"             : (".1.3.6.1.4.1.5951.4.1.1.41.7.1", [1, 2]),
+                              # sysHealthCounterName, sysHealthCounterValue
+    "snmp_scan_function"    : lambda oid: oid(".1.3.6.1.2.1.1.2.0").startswith(".1.3.6.1.4.1.5951"),
+}
