@@ -1,0 +1,11 @@
+check_mk Plugin to check environment of citrix netscaler.
+
+The check was tested on the following Linux versions: Debian Wheezy
+
+Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
+I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+INSTALLATION INSTRUCTIONS
+
+On your check server:
+Install the netscaler_health-x.x.mk package.
