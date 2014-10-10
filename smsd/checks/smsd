@@ -18,7 +18,7 @@ def check_smsd(item, _no_params, info):
     worststate = 0
 
     if len(info) == 0:
-        return (3, "no information from SMSD: SMSD daemon not running or smsd stus file not configured.")
+        return (3, "no information from SMSD: SMSD daemon not running or smsd status file not configured.")
 
     for line in info:
         if len(line) == 2 :
