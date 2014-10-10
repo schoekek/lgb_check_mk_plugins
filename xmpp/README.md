@@ -19,3 +19,7 @@ Insert the variable in your nagios/icinga check_mk template file.
 	 	check_mk --notify
 	}
 ```
+When you use CMC as Core, pls change the Costum Attribute in notification script to
+```
+tojid= os.environ['NOTIFY_CONTACT_IM']
+```
