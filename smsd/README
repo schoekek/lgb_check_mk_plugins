@@ -6,7 +6,7 @@ http://smstools3.kekekasvi.com/index.php?p=statusmonitor
 
 Change the location of status file in agentfile.
 
-The check was tested on the following Linux versions: Debian Squeeze
+The check was tested on the following Linux versions: Debian Squeeze, Wheezy
 
 Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
 I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
