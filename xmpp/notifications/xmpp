@@ -26,5 +26,5 @@ client.connect(server=('server.local',5222))
 client.auth(jid.getNode(), passwd, jid.getResource())
 client.sendInitPresence()
 msg = xmpp.Message(tojid, message)
-msg.setAttr('type', 'chat'
+msg.setAttr('type', 'chat')
 client.send(msg)
