@@ -9,8 +9,8 @@ test -e $SMSD_STATFILE || exit 0
 
 # Source the configuration file for this agent plugin
 echo '<<<smsd>>>'
-echo 'status' $(cat $SMSD_STATFILE | head -1 | cut -f 3)
-MON=$(tail -n 1 $SMSD_STATFILE | cut -f 8 | awk '{print $2}')
+echo 'status' $(cat $SMSD_STATFILE | head -1 | cut -d "," -f 2 | cut -c 2-)
+MON=$(tail -n 1 $SMSD_STATFILE | cut -d "," -f 6 | awk '{print $2}')
 if [ -n "$MON" ]
 then
     echo 'mon' $MON
