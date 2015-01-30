@@ -1,0 +1,17 @@
+title: UPS: alerts check
+author: Karsten Schoeke (karsten.schoeke@geobasis-bb.de)
+agents: snmp
+license: GPL
+distribution: check_mk
+description:
+ This check monitors the alerts table on UPS devices.
+
+ Returns {OK} if the table emty,
+ {CRIT} on status is one or more alerts present,
+ {UNKNOW} on other state.
+
+item:
+ On item.
+
+inventory:
+ Finds one item per UPS device.

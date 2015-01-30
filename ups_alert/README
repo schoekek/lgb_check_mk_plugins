@@ -1,0 +1,11 @@
+check_mk Plugin to check check the UPS status table via SNMP.
+
+ Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. I'm also reading the german
+ check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+
+    INSTALLATION INSTRUCTIONS
+
+    On your check server:
+    
+        Install the ups_alert-x.x.mkp package on your check server
