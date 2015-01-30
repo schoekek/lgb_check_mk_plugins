@@ -74,8 +74,7 @@ ups_alert_status = { "1" : "BatteryBad",
 
 
 def inventory_ups_alert(info):
-    if len(info) > 0:
-        return [ (None, None) ]
+    return [ (None, None) ]
 
 def check_ups_alert(_no_item, _no_params, info):
     state = 0
