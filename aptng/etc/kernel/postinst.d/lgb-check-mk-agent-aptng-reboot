@@ -1,2 +1,2 @@
 #!/bin/bash
-find /etc/check_mk/cache/ -type f -name 'plugins*apt.cache' -delete && check_mk_agent &> /dev/null
+find /var/lib/check_mk_agent/cache/ -type f -name 'plugins*apt.cache' -delete && check_mk_agent &> /dev/null
