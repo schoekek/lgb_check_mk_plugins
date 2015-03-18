@@ -3,7 +3,7 @@
 # Check_MK APT-NG Plugin - Check for upgradeable packages.
 #
 # Copyright 2012, Stefan Schlesinger <sts@ono.at>
-# Copyright 2013, Karsten Schoeke <karsten.schoeke@geobasis-bb.de>
+# Copyright 2015, Karsten Schoeke <karsten.schoeke@geobasis-bb.de>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 
 # Configure per repository severity
 #
-# 1 WARNING ; 2 CRITICAL 
+# 1 WARNING ; 2 CRITICAL
 apt_repository_severity = {
   'Debian-Security' : 2,
   'debian-volatile' : 1,
@@ -46,34 +46,41 @@ def check_apt(_no_item, _no_params, info):
     level        = 0
     msg          = ""
     updates      = 0
+    crit_updates = 0
+    deb_release  = 0.0
+    reboot_req   = "no"
     
     # Parse the agent output
-    deb_release  = info[1][0]
-    reboot_req   = info[0][0]
+    if len(info) > 0:
+        deb_release  = info[1][0]
+        reboot_req   = info[0][0]
 
     if len(info) > 2:
         packages  = info[2:]
-        
+ 
         for package in packages:
             name   = package[0]
             updates += 1
             source = package[1].split(' ')[0].split(':')[0]
             if source in apt_repository_severity:
-                level  = max(level, apt_repository_severity[source])
+                severity  = apt_repository_severity[source]
             else:
-                level  = max(level, apt_repository_severity['__default__'])
-            
-            if not source in apt_upgrades:
-                apt_upgrades[source] = []
+                severity  = apt_repository_severity['__default__']
 
-    for source in apt_upgrades:
-            if level == 1:
-                msg = "%s updates (!)" % updates 
-            elif level >= 2:
-                msg = "%s critical updates (!!)" % updates 
-            
+            if severity >= 2:
+                crit_updates += 1
+
+            level = max(level, severity)
+
+        if (updates > 0) and (crit_updates == updates):
+            msg = "%i critical updates available (!!)" % crit_updates
+        elif (updates > 0) and (crit_updates > 0):
+            msg = "%i updates available (%i critical) (!!)" % (updates, crit_updates)
+        else:
+            msg = "%i updates available (!)" % updates
+
     if (reboot_req == "yes") and (level == 0):
-        level = 1 
+        level = 1
         msg = "reboot required (!)"
 
     if level > 0:
