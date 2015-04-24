@@ -4,7 +4,7 @@ The agent plugin will check the status of xcache.
 Please install and configure the xcache php module 
 and put the xcache_status.php file in the webserver root directory.
 
-The check was tested on the following Linux versions: Debian Wheezy
+The check was tested on the following Linux versions: Debian Wheezy (xcache 2.0.0)
 
 Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
 I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
