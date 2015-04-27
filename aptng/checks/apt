@@ -28,7 +28,7 @@
 
 # Configure per repository severity
 #
-# 1 WARNING ; 2 CRITICAL
+# 1 WARNING ; 2 CRITICAL 
 apt_repository_severity = {
   'Debian-Security' : 2,
   'debian-volatile' : 1,
@@ -57,7 +57,7 @@ def check_apt(_no_item, _no_params, info):
 
     if len(info) > 2:
         packages  = info[2:]
- 
+        
         for package in packages:
             name   = package[0]
             updates += 1
@@ -66,7 +66,7 @@ def check_apt(_no_item, _no_params, info):
                 severity  = apt_repository_severity[source]
             else:
                 severity  = apt_repository_severity['__default__']
-
+           
             if severity >= 2:
                 crit_updates += 1
 
@@ -80,7 +80,7 @@ def check_apt(_no_item, _no_params, info):
             msg = "%i updates available (!)" % updates
 
     if (reboot_req == "yes") and (level == 0):
-        level = 1
+        level = 1 
         msg = "reboot required (!)"
 
     if level > 0:
