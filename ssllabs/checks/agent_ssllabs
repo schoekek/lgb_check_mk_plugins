@@ -1,0 +1,28 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+
+# {
+#     'sslhost': 'ssl.test.com',
+#     'timeout': '180',
+# }
+
+# 'sslhost', timeout
+
+def agent_ssllabs_arguments(params, hostname, ipaddress):
+    args = hostname
+    if "sslhost" in params:
+        args += " %s" % params["sslhost"]
+    else:
+        args += ' %s' % hostname
+
+    if "timeout" in params:
+        args += ' %d' % params["timeout"]
+    else:
+        args += ' 180'
+
+    if "proxy" in params:
+        args += " %s" % params["proxy"]
+
+    return args
+
+special_agent_info['ssllabs'] = agent_ssllabs_arguments

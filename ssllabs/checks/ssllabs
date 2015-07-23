@@ -1,0 +1,63 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+#
+# 2015 Karsten Schoeke karsten.schoeke@geobasis-bb.de
+
+# Example output from agent:
+#<<<ssllabs_grade>>>
+#server1.de A 1435565830118
+#server2.de A 1435565830118
+#<<<<>>>>
+
+import time, re
+
+factory_settings["ssllabs_grade_defaults"] = {
+    "score" : ("A", "B|C", "D|E|F|M|T"),
+    "age" : (86400, 259200), }
+
+def inventory_ssllabs_grade(info):
+    inventory = []
+    for line in info:
+        if len(line) > 0:
+            if line[0] == 'JSON':
+                continue
+            inventory.append( ( line[0], {} ))
+    return inventory
+
+    #return [ ( line[0], {} ) for line in info ]
+
+def check_ssllabs_grade(item, params, info):
+    now = time.time()
+    for line in info:
+        if line[0] == item:
+            lastcheck = time.strftime("%d.%m.%Y %H:%M", time.localtime(int(line[2][:10])))
+            if len(line[1]) <= 2: #check stati READY
+                ok, warn, crit = params["score"]
+                warn_last_run, crit_last_run = params["age"]
+                time_diff = int(now - int(line[2][:10]))
+                re_ok = re.compile(ok)
+                re_warn = re.compile(warn)
+                re_crit = re.compile(crit)
+                if re_crit.match(line[1]) or time_diff > crit_last_run:
+                    state = 2 
+                elif re_warn.match(line[1]) or time_diff > warn_last_run:
+                    state = 1
+                elif re_ok.match(line[1]):
+                    state = 0
+                else:
+                    state = 3
+                return state, "grade for ssl server check was \"%s\", last check at %s" % ( line[1], lastcheck )
+            else:
+                return 3, "server check status was \"%s\", last check at %s" % ( line[1], lastcheck )
+                
+    raise MKCounterWrapped("connect to ssllabs api failed")
+
+
+check_info['ssllabs_grade'] = {
+    "check_function"          : check_ssllabs_grade,
+    "inventory_function"      : inventory_ssllabs_grade,
+    "service_description"     : "SSLLABS %s",
+    "has_perfdata"            : False,
+    "default_levels_variable" : "ssllabs_grade_defaults",
+    "group"                   : "ssllabs_grade",
+}
