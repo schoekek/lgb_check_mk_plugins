@@ -1,0 +1,25 @@
+check_mk Plugin to check the complete SSL/TLS ssl server installation.
+
+The agent use the qualys ssllabs api under
+https://www.ssllabs.com/projects/ssllabs-apis/index.html
+
+Please read the terms an condition to use it under
+https://www.ssllabs.com/downloads/Qualys_SSL_Labs_Terms_of_Use.pdf
+
+The check was tested on the following Linux versions: Debian Wheezy 
+
+Any feedback welcome, PM to karsten.schoeke[at]geobasis-bb[dot]de. 
+I'm also reading the german check_mk ML: checkmk-de@lists.mathias-kettner.de
+
+INSTALLATION INSTRUCTIONS
+
+On your check server:
+  * To ensure, that the check host access to ssllabs checks server api.ssllabs.com.
+  * Create a new wato rule under 
+    'Datasource Programs' --> 'Check SSL Server via ssllabs API'
+    This is importend for special agent access to ssllabs api server
+  * Create a new wato rule under
+    'Parameters for discovered services' --> 'ssllabs scan checks'
+    Here can you configure the grande level and age of check
+
+We configure a check interval for all ssllab checks to one our.
