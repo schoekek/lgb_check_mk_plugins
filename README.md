@@ -1,9 +1,15 @@
-check_mk_plugins
+check_mk plugins
 ================
 
-CheckMK Plugins
+    This repository holds a copy of LGB check_mk plugins. Each sub-directory contains
+    one plugin including a README with installation instructions.
+    
+    I uploaded the mk packages to http://exchange.check-mk.org/
 
-This repository holds a copy of LGB check_mk plugins. Each sub-directory contains
-one plugin including a README with installation instructions.
+Contributing
+============
 
-I uploaded the mk packages to http://exchange.check-mk.org/
+    Fork the project
+    Commit and push until you are happy with your contribution
+    Send a pull request with a description of your changes
+
