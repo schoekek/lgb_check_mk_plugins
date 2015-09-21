@@ -5,7 +5,8 @@ if [[ -e /etc/debian_version && `which apt-get` ]] &>/dev/null ; then
     REBOOT_REQUIRED="no"
     DEBIAN_VERSION=$(cat /etc/debian_version | cut -d '.' -f1)
     DEB6_RE='^\S+ \S+ \S+ \(Debian ([^\)]+)\).*$'
-    KERNEL_PACKAGE=`dpkg-query -W -f='${Version} ${Status;20} ${Maintainer} ${Provides}\n' |grep 'install ok installed Debian Kernel Team'|grep linux-image| awk '{ print $1 }'`    KERNEL=`cat /proc/version`
+    KERNEL_PACKAGE=`dpkg-query -W -f='${Version} ${Status;20} ${Maintainer} ${Provides}\n' |grep 'install ok installed Debian Kernel Team'|grep linux-image| awk '{ print $1 }'`    
+    KERNEL=`cat /proc/version`
     if [[ $DEBIAN_VERSION == '6' ]]; then
         if [[ $KERNEL =~ $DEB6_RE ]]; then
             KERNEL_VERSION="${BASH_REMATCH[1]}"
