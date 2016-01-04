@@ -42,7 +42,7 @@ check_info['cp_fw_policy'] = {
   "check_function"      : check_cp_fw_policy,
   "service_description" : "CP FW policy",
   "has_perfdata"        : False,
-  "group"               : "cp_fw_policyt",
+  "group"               : "cp_fw_policy",
   "snmp_info"           : ( ".1.3.6.1.4.1.2620.1.1", [ "1.0", "2.0" ] ),
   "snmp_scan_function"  : lambda oid: oid(".1.3.6.1.4.1.2620.1.1.21.0").lower().startswith('firewall') 
 }
