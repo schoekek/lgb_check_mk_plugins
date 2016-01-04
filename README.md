@@ -12,4 +12,5 @@ Contributing
     Fork the project
     Commit and push until you are happy with your contribution
     Send a pull request with a description of your changes
+    Wait for merge ;-)
 
