@@ -31,5 +31,5 @@ def ajax_switch_visibility_control():
     html.write("</td></tr>")
     html.write("</table>")
     html.set_browser_reload(1)
-    #html.reload_sidebar() ??? Ich moechte hier ein reload aller sidebar elemente, am besten auch der views erreichen ????
+    html.reload_sidebar()
 
