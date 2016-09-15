@@ -34,6 +34,6 @@ register_check_parameters(
     ),
     TextAscii( title=_("domainname of ssl cert"),
     help=_("The fqdn on ssl cert to check")),
-    "first",
+    match_type = "dict",
 )
 
