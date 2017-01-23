@@ -14,6 +14,7 @@ if [[ -e /etc/debian_version && `which apt-get` ]] &>/dev/null ; then
     elif [[ $DEBIAN_VERSION == '7' ]]; then
             KERNEL_VERSION=$(echo ${KERNEL##* })
     elif [[ $DEBIAN_VERSION == '8' ]]; then
+        KERNEL_PACKAGE=''
         NEEDRESTART=`needrestart -bk|grep KSTA|cut -d: -f2|sed 's/^ //'`
         if [[ $NEEDRESTART -gt 1 ]]; then
             REBOOT_REQUIRED="yes"
