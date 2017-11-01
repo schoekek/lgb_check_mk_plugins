@@ -9,6 +9,8 @@ APT-NG - Check_MK Plugin to check for upgradeable Debian packages.
     
 INSTALLATION INSTRUCTIONS
 
+    Download the current mkp package from https://mathias-kettner.de/check_mk_exchange.php?HTML=yes
+
     On your Check_MK clients:
     
         Copy plugins/apt from mk package to your clients into /usr/lib/check_mk_agent/plugins/ or
